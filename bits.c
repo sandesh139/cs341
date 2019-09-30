@@ -173,8 +173,14 @@ NOTES:
  */
 int allEvenBits(int x) {
 /*here the pattern of 0101 0101 0101... is made for 32 bits by using 0x5 and then "AND" with the ones complement of x. so, if all even bits are one then the result will get to zero. And the result is returned. 
-*/  
-return !(((((((0x5<<4)|0x5)<<8)|((0x5<<4|0x5)))<<16)|((((0x5<<4)|0x5)<<8)|((0x5<<4|0x5))))&(~x));
+*/
+
+int getFirst =(0x5<<4|0x5);
+int getSecond = ((getFirst<<8)|getFirst);
+int getThird = (getSecond<<16)|(getSecond);
+
+return !(getThird&(~x));
+//return !(((((((0x5<<4)|0x5)<<8)|((0x5<<4|0x5)))<<16)|((((0x5<<4)|0x5)<<8)|((0x5<<4|0x5))))&(~x));
 }
 
 
@@ -235,7 +241,7 @@ int replaceByte(int x, int n, int c) {
  *   Rating: 1
  */
 int tmax(void) {
-  return ~(1<<((1<<5)-1));   //this will give 0 with other 31 1's
+  return ~(1<<((32)+(~0)));   //this will give 0 with other 31 1's
 }
 /* 
  * fitsBits - return 1 if x can be represented as an 
@@ -303,37 +309,43 @@ int subOK(int x, int y) {
 int howManyBits(int x) {
 /*if there is any negative number, we will convert it to its two bits complement in the following lines of code.
 */
-
+int a1;
+int a2;
+int a3;
+int a4;
+int a5;
+int sum;
+int checkZero;
+int ifZero;
 int positive = x ^(x>>31);
 
 /* now we will check if it requires more than 16 bits or not. if it requires more than 16 bit, we will get at least 16 bit in a1 variable and then shift bit by 16. Otherwise a1 will be left as zero.
 */
-int a1 = (!(!(positive>> 16)))<<4;
+a1 = (!(!(positive>> 16)))<<4;
 
 //now we can shift positive by 16 or 0. If a1 is 16 then by 16 otherwise 0.
 
 positive = positive >>a1;
 
 //now we will do the same checking and shifting for 8 as we did for 16
-int a2 = (!(!(positive>> 8)))<<3;
+a2 = (!(!(positive>> 8)))<<3;
 positive = positive >>a2;
 
 //now for 4.
-int a3 = (!(!(positive>> 4)))<<2;
+a3 = (!(!(positive>> 4)))<<2;
 positive = positive >>a3;
 
 //now for 2.
-int a4 = (!(!(positive>> 2)))<<1;
+a4 = (!(!(positive>> 2)))<<1;
 positive = positive >>a4;
 
 //now for 1.
-int a5 = (!(!(positive>> 1)));
+a5 = (!(!(positive>> 1)));
 
 //now we can return the total sum of the a1 through a5 and the sign bit and for the last a5.
-int sum = a1 +a2+a3+a4+a5+2;
-int checkZero = (!(!(positive))<<31)>>31;
-
-int ifZero = !positive;
+sum = a1 +a2+a3+a4+a5+2;
+checkZero = (!(!(positive))<<31)>>31;
+ifZero = !positive;
   return (sum&checkZero)|ifZero;
 }
 /* 
@@ -410,15 +422,16 @@ return (signUf<<31)|exponent|fraction;
  */
 int trueFiveEighths(int x)
 {
+	int result =0;
 	int allOnesorZero = (x>>31);    //getting all ones or zero.
 	int eighth = x>>3;             //getting 1/8th of the x first to prevent overflow.
 	int remainder = x&0x7;         //getting last three bits as remainder we get after shifting x by 3 right.
 	int fiveTimesEighth  = (eighth<<2)+eighth;      //this gives five times.
 	remainder = (remainder << 2)+remainder;         //this gives five times
-	int add = allOnesorZero & 0x7;                 //this gives the either 111 or zero.
-	remainder = remainder + add;                   //so either remainder will change or be left as zero based on whether x was negative or positive
+	                 //this gives the either 111 or zero.
+	remainder = remainder + (allOnesorZero&7);                   //so either remainder will change or be left as zero based on whether x was negative or positive
 	remainder = remainder>>(0x3);                  //now finally get one eighth of remainder
-	int result = fiveTimesEighth+remainder;        //getting sum as result.
+	result = fiveTimesEighth+remainder;        //getting sum as result.
 
 return result;
 }
