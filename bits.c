@@ -1,7 +1,7 @@
  /* 
  * CS:APP Data Lab 
  * 
- * <Please put your name and userid here>
+ * <Sandesh Timilsina, stimilsina@myunm.edu,  101845621>
  * 
  * bits.c - Source file with your solutions to the Lab.
  *          This is the file you will hand in to your instructor.
@@ -172,7 +172,7 @@ NOTES:
  *   Ratiing: 2
  */
 int allEvenBits(int x) {
-/*here the patteren of 0101 0101 0101... is made for 32 bits by using 0x5 and then "AND" with the ones complement of x. so, if all even bits are one then the result will get to zero. And the result is returned. 
+/*here the pattern of 0101 0101 0101... is made for 32 bits by using 0x5 and then "AND" with the ones complement of x. so, if all even bits are one then the result will get to zero. And the result is returned. 
 */  
 return !(((((((0x5<<4)|0x5)<<8)|((0x5<<4|0x5)))<<16)|((((0x5<<4)|0x5)<<8)|((0x5<<4|0x5))))&(~x));
 }
@@ -217,6 +217,14 @@ int bitXor(int x, int y) {
  *   Max ops: 10
  *   Rating: 3
  */
+
+/*here lets take an example 12345678 is x = 00010010 00110100 01010110 01111000
+         * now we have to get the second section replaced by AB when int i is passed as 2.
+	 * So, my first move is to get  00010010 00000000 01010110 01111000 so I can OR this with
+	 * 00000000 10101011 00000000 00000000. Then we can return the replaced hex.
+	 *
+	 */
+
 int replaceByte(int x, int n, int c) {
    return (~(0xFF<< (n<<3))&x)|(c<<(n<<3));
 }
@@ -227,7 +235,7 @@ int replaceByte(int x, int n, int c) {
  *   Rating: 1
  */
 int tmax(void) {
-  return ~(1<<((1<<5)-1));
+  return ~(1<<((1<<5)-1));   //this will give 0 with other 31 1's
 }
 /* 
  * fitsBits - return 1 if x can be represented as an 
@@ -402,16 +410,15 @@ return (signUf<<31)|exponent|fraction;
  */
 int trueFiveEighths(int x)
 {
-
-	int allOnesorZero = (x>>31);
-	int eighth = x>>3;
-	int remainder = x&0x7;
-	int fiveTimesEighth  = (eighth<<2)+eighth;
-	remainder = (remainder << 2)+remainder;
-	int add = allOnesorZero & 0x7;
-	remainder = remainder + add;
-	remainder = remainder>>(0x3);
-	int result = fiveTimesEighth+remainder;
+	int allOnesorZero = (x>>31);    //getting all ones or zero.
+	int eighth = x>>3;             //getting 1/8th of the x first to prevent overflow.
+	int remainder = x&0x7;         //getting last three bits as remainder we get after shifting x by 3 right.
+	int fiveTimesEighth  = (eighth<<2)+eighth;      //this gives five times.
+	remainder = (remainder << 2)+remainder;         //this gives five times
+	int add = allOnesorZero & 0x7;                 //this gives the either 111 or zero.
+	remainder = remainder + add;                   //so either remainder will change or be left as zero based on whether x was negative or positive
+	remainder = remainder>>(0x3);                  //now finally get one eighth of remainder
+	int result = fiveTimesEighth+remainder;        //getting sum as result.
 
 return result;
 }
