@@ -1,0 +1,12 @@
+This is bomb 37.
+
+It belongs to stimilsina (stimilsina@unm.edu)
+
+FOR PHASE ONE:
+1. first I will put the break explode_bomb
+2. second I will put the break phase_1
+3. run
+4. display/s $esi
+5. I not down the string I got.
+6. quit()
+7.
