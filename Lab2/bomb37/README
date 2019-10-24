@@ -2,11 +2,83 @@ This is bomb 37.
 
 It belongs to stimilsina (stimilsina@unm.edu)
 
-FOR PHASE ONE:
+FOR PHASE ONE: Key You can Russia from land here in Alaska.
 1. first I will put the break explode_bomb
 2. second I will put the break phase_1
 3. run
-4. display/s $esi
-5. I not down the string I got.
+4. display/s $0
+5. I not down the string I got,  You can Russia from land here in Alaska.
 6. quit()
-7.
+
+For Phase Two:
+Key: 1 2 4 8 16 32
+This phase is for loop.
+here we have first element as one from line 400f67.
+And each next element is twice its precendent element. Here, at line 0x 400f7ec we have,
+add %eax %eax. so, each next element should be twice of the previous element.
+So the answer is:  1 2 4 8 16 32
+
+For Phase Three:
+Key : 4 w 148
+I did several tries randomly. But, I had the idea that middle one should be the character
+once I did x/s 0x402766. which says "%d %c %d"
+Line 400fe4 says that first argument should be less than or equal to 7. Since, If it is
+above 7, the code jumps to explode_bomb. Based on our first argument, we jump to the 
+corresponding line.
+I did first argument as 4 then, I was jumped to the line 401078 here we move 0x77 to $eax
+and in line 40107d we compare the 0x94 with third argument. If the third argument doesnot
+equal to 0x94 we jumpe to explode_bomb. So, I kept my third argument 148 which is 0x94 in hex.
+Now, I jump to 4010eb. where we compare the 0x77 with our second argument. So, I put the char
+with ascii 0x77 which is w. SO, the final key is 4 w 148.
+
+
+For phase Four: Key 48 4
+I found $eax to be one when i gave first argument 456. so I failed the line 401174
+I found $eax to be two when i gave arguments 456 789. So, i passed the line 401174 but
+failed jbe in line 40117f since 787>2.
+So, second argument has to bes less than 5.
+Next trial: 456 4.
+func is called. looks like recursive method.
+
+with input 123 4: first I put the break point in 0x401193 and check the 4($rsp) is comparing $eax i.e
+our first argument 123 with 48 which was obtained from the recursive func4 function. Since those two
+number are not equal explode_bomb was called.
+
+lets see what we get input 48 4: bomb got diffused.
+
+
+For phase Five: Key 5 115
+When I had 1234 as argument, I got 1 in $eax. ALso from previous scanf we can tell $eax stores
+the number of argument. SO, the there should be more than one argument. This casse failed by line
+4011e3.
+I just realized that in 4011eb we are only considering the last 4 bit of the first argument. So, the
+first number should be in between 0 to 15. And in line 401205 we have different values at the given address
+for different first argument. I noted down the value at addresses 0x401205 + multiple of 4. here we need 15
+to be the value to get out the loop. But also when we get out of the loop we also need to make $edx to have
+15 in it.Otherwise we willnot pass the line 40121a. SO, for first argument as 5, loop gets run for 15 times
+so, we have $edx = 15 since we add 1 to it in each iterations. And I found that the $ecx have the value 115
+at the end of the loop. So, the second argument has to be 115 to pass the line 40121f. 
+
+For Phase Six:
+First test input: 1 2 3 4 5 6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
