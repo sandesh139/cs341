@@ -61,6 +61,14 @@ at the end of the loop. So, the second argument has to be 115 to pass the line 4
 
 For Phase Six:
 First test input: 1 2 3 4 5 6
+Here I found that to jump line 401283, we must have first argument - 1 as less than or equal to 5. This
+means first argument is less than or equal to 6.
+Second test input:4 222 333 444 555 666
+Here I found a fact that all number has to be less than or equal to 6 since, we after each inner for loop
+we test next element in line 401281. So, I will be testing next values in between 1 and 6.
+I just found somethin cool with the loop from line  4012b8 to 4012ce. Here we are subtracting the each
+argument from 7 and replacing that argument with the result.
+When I tried 2 3 1 4 5 6. At line 4012d5, I got all values replaced by 5 4 6 3 2 1.
 
 
 
