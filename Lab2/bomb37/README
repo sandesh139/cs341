@@ -7,7 +7,7 @@ FOR PHASE ONE: Key You can Russia from land here in Alaska.
 2. second I will put the break phase_1
 3. run
 4. display/s $0
-5. I not down the string I got,  You can Russia from land here in Alaska.
+5. I note down the string I got,  You can Russia from land here in Alaska.
 6. quit()
 
 For Phase Two:
@@ -69,8 +69,13 @@ we test next element in line 401281. So, I will be testing next values in betwee
 I just found somethin cool with the loop from line  4012b8 to 4012ce. Here we are subtracting the each
 argument from 7 and replacing that argument with the result.
 When I tried 2 3 1 4 5 6. At line 4012d5, I got all values replaced by 5 4 6 3 2 1.
-
-
+For the last jump in line 401340, we are comparing some hex values based on the input. Test
+happens until we have the right corresponding hex values.
+SO, for input 2 3 1 4 5 6 I passed only two test which I think passed the test for 2 3 should be
+in order. Now Lets see for input 1 2 3 4 5 6. Here I passed three test so, 1 2 3 4 5 6. Here,
+I passed three test so, 1 comes before 2 and 2 comes before 3 and 3 comes before 4. Now,
+with input 5 1 2 3 4 6 we passed four tests. So, first four is in right order. Now, I have to put
+the 6 in right order. Which I found to be 5 1 2 3 6 4
 
 
 
