@@ -20,7 +20,7 @@ typedef struct{
 
 
 typedef struct{
-	int recently_used;
+	int timeStamp;
 	int valid;
 	long long int tag;
 } eachLine;
@@ -31,8 +31,6 @@ FILE *pFile;
 int main(int argc, char** argv)
 {
     arg_input inputs;
-    //results output;
-    //eachLine aline;
     char letter;
     eachLine **linePointer;
     int totalSets;
@@ -43,6 +41,10 @@ int main(int argc, char** argv)
     int size;
     unsigned long int tag;
     unsigned long int set;
+
+    int hitCounter =0;
+    int missCounter = 0;
+    int evictionCounter =0;
 
     while((letter = getopt(argc, argv, "s:E:b:t:")) != -1)
     {
@@ -71,6 +73,8 @@ int main(int argc, char** argv)
     }
     linePointer = malloc(totalSets *8);
     int i =0;
+    int counter =0;
+    //getting hte space for lines
     for(i =0; i<totalSets;i++){
 	    linePointer[i] = malloc(inputs.lines* sizeof(eachLine));
     }
@@ -80,8 +84,68 @@ int main(int argc, char** argv)
 	    tag = (address>>inputs.set)>>inputs.blocks;
 	    int tagSize = 64 - inputs.set - inputs.blocks;
 	    set = (address<< tagSize)>>(64-inputs.set);
+	    printf("\n tag = %lx, set = %lx", tag, set); //tested and found its working properly
+
+	    i = 0;
+	    int isHit = 0;
+	    int isValidLine = 0;
+	    int isEviction =0;
+	    int oldestLine = -1;
+	    int m =0;
+	    while(i<inputs.lines){
+		    if((linePointer[set][i]).valid == 0 && isValidLine ==0 ){
+			    isValidLine = 1;
+			    counter = i +1;
+		    } else if ((linePointer[set][i]).valid ==1 && (linePointer[set][i]).tag == tag){
+			    isHit = 1;
+			    for(m = 0; m< inputs.lines; m++){
+				    if(m == i){
+					    (linePointer[set][m]).timeStamp = 0;
+				    } else {
+					    (linePointer[set][m]).timeStamp = (linePointer[set][m]).timeStamp +1;
+				    }
+			    }
+		    }
+		    if(isHit==0){
+			    if(isValidLine == 1 ){
+					(linePointer[set][counter-1]).valid = 1;
+					(linePointer[set][counter-1]).tag = tag;
+					 for(m = 0; m< inputs.lines; m++){
+                                    		if(m == counter-1){
+                                            		(linePointer[set][m]).timeStamp = 0;
+                                    		} else {
+                                            		(linePointer[set][m]).timeStamp = (linePointer[set][m]).timeStamp +1;
+                                    		}
+					 }
+					 isEviction = 0;
+
+                            } else if (isValidLine == 0){
+				    int k  =0;
+				    int lru =0;
+				    for( k=0; k<inputs.lines;k++){
+					    if(linePointer[set][k].timeStamp >oldestLine){
+						    oldestLine = (linePointer[set][k]).timeStamp;
+						    lru = k;
+					    }
+				    }
+				    for(m = 0; m< inputs.lines; m++){
+                                                if(m == lru){
+                                                        (linePointer[set][m]).timeStamp = 0;
+                                                } else {
+                                                        (linePointer[set][m]).timeStamp = (linePointer[set][m]).timeStamp +1;
+						}
+				    }
+				    isEviction  =1;
+			    }
+		    }
+		    switch (operation) {
+			    case 'M': if(isHit){
+
+
+	    }
+
     }
-    printf("reading file tag = %lx, set = %lx", tag, set);
+    
 
 
    // printSummary(0, 0, 0);
