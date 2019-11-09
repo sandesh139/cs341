@@ -84,7 +84,7 @@ int main(int argc, char** argv)
 	    tag = (address>>inputs.set)>>inputs.blocks;
 	    int tagSize = 64 - inputs.set - inputs.blocks;
 	    set = (address<< tagSize)>>(64-inputs.set);
-	    printf("I wanted to print this .............\n tag = %lx, set = %lx", tag, set); //tested and found its working properly
+	    printf("\nOperation is %c, with address %ld tag = %lx, set = %lx",operation,address, tag, set); //tested and found its working properly
 
 	    i = 0;
 	    int isHit = 0;
@@ -142,15 +142,20 @@ int main(int argc, char** argv)
 		    }
 		    if (isHit){
 			    hitCounter += 1;
+			    printf("\nthis is hit");
+
 		    } else if(isEviction){
 			    missCounter +=1;
 			    evictionCounter +=1;
+			    printf("\nthis is eviction and miss");
 		    } else {
 			    missCounter +=1;
+			    printf("\nthis is no eviction but hit");
 		    }
 
 		    if(operation == 'M'){
 			    hitCounter +=1;
+			    printf("\nthis is M");
 		    }
 
     }
