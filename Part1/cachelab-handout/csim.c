@@ -1,4 +1,4 @@
-//#include "cachelab.h"
+#include "cachelab.h"
 #include <getopt.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -79,12 +79,12 @@ int main(int argc, char** argv)
 	    linePointer[i] = malloc(inputs.lines* sizeof(eachLine));
     }
 
-    while(fscanf(pFile, " %c %lx,%d", &operation, &address, &size)>0)
+    while(fscanf(pFile, " %c %lx,%d", &operation, &address, &size)== 3)
     {
 	    tag = (address>>inputs.set)>>inputs.blocks;
 	    int tagSize = 64 - inputs.set - inputs.blocks;
 	    set = (address<< tagSize)>>(64-inputs.set);
-	    printf("\n tag = %lx, set = %lx", tag, set); //tested and found its working properly
+	    printf("I wanted to print this .............\n tag = %lx, set = %lx", tag, set); //tested and found its working properly
 
 	    i = 0;
 	    int isHit = 0;
@@ -106,6 +106,8 @@ int main(int argc, char** argv)
 				    }
 			    }
 		    }
+		    i++;
+	    }
 		    if(isHit==0){
 			    if(isValidLine == 1 ){
 					(linePointer[set][counter-1]).valid = 1;
@@ -138,16 +140,27 @@ int main(int argc, char** argv)
 				    isEviction  =1;
 			    }
 		    }
-		    switch (operation) {
-			    case 'M': if(isHit){
+		    if (isHit){
+			    hitCounter += 1;
+		    } else if(isEviction){
+			    missCounter +=1;
+			    evictionCounter +=1;
+		    } else {
+			    missCounter +=1;
+		    }
 
-
-	    }
+		    if(operation == 'M'){
+			    hitCounter +=1;
+		    }
 
     }
-    
 
-
-   // printSummary(0, 0, 0);
+    fclose(pFile);
+    int f = 0;
+    for(f = 0; f<totalSets;f++){
+	    free(linePointer[f]);
+    }
+    //printSummary(0,0,0);
+    printSummary(hitCounter, missCounter, evictionCounter);
     return 0;
 }
