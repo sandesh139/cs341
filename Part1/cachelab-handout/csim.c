@@ -1,8 +1,10 @@
 #include "cachelab.h"
 #include <getopt.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <math.h>
+
 typedef struct{
 	int set;
 	int lines;
@@ -165,13 +167,16 @@ int main(int argc, char** argv)
 
 	    }
     }
+    printSummary(hitCounter, missCounter, evictionCounter);
 
     fclose(pFile);
     int f = 0;
     for(f = 0; f<totalSets;f++){
 	    free(linePointer[f]);
     }
+    free(linePointer);
+    //printSummary(hitCounter, missCounter, evictionCounter);
+
     //printSummary(0,0,0);
-    printSummary(hitCounter, missCounter, evictionCounter);
     return 0;
 }
