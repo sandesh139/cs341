@@ -92,6 +92,8 @@ int main(int argc, char** argv)
 	    int isEviction =0;
 	    int oldestLine = -1;
 	    int m =0;
+	    counter =0;
+	    if(operation == 'M' || operation == 'S' || operation == 'L'){
 	    while(i<inputs.lines){
 		    if((linePointer[set][i]).valid == 0 && isValidLine ==0 ){
 			    isValidLine = 1;
@@ -105,6 +107,7 @@ int main(int argc, char** argv)
 					    (linePointer[set][m]).timeStamp = (linePointer[set][m]).timeStamp +1;
 				    }
 			    }
+			    break;
 		    }
 		    i++;
 	    }
@@ -136,7 +139,9 @@ int main(int argc, char** argv)
                                                 } else {
                                                         (linePointer[set][m]).timeStamp = (linePointer[set][m]).timeStamp +1;
 						}
-				    }
+				  }
+				    (linePointer[set][lru]).valid = 1;
+				    (linePointer[set][lru]).tag = tag;
 				    isEviction  =1;
 			    }
 		    }
@@ -150,7 +155,7 @@ int main(int argc, char** argv)
 			    printf("\nthis is eviction and miss");
 		    } else {
 			    missCounter +=1;
-			    printf("\nthis is no eviction but hit");
+			    printf("\nthis is no eviction but is miss");
 		    }
 
 		    if(operation == 'M'){
@@ -158,6 +163,7 @@ int main(int argc, char** argv)
 			    printf("\nthis is M");
 		    }
 
+	    }
     }
 
     fclose(pFile);
