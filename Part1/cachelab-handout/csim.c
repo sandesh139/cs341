@@ -168,12 +168,12 @@ int main(int argc, char** argv)
 	    
 		if (isHit){       //if we have any hit.
 			hitCounter += 1;
-			printf("\nthis is hit");
+			//printf("\nthis is hit");
 
 		} else if(isEviction){    //if we have any eviction
 			missCounter +=1;
 			evictionCounter +=1;
-			printf("\nthis is eviction and miss");
+			//printf("\nthis is eviction and miss");
 		} else {
 			    missCounter +=1;
 			    printf("\nthis is no eviction but is miss");
@@ -186,7 +186,8 @@ int main(int argc, char** argv)
 
 	    }
     }
-    printSummary(hitCounter, missCounter, evictionCounter);
+
+
 
     fclose(pFile);
     int f = 0;
@@ -197,8 +198,8 @@ int main(int argc, char** argv)
 	    free(linePointer[f]);
     }
     free(linePointer);
-    //printSummary(hitCounter, missCounter, evictionCounter);
+    printSummary(hitCounter, missCounter, evictionCounter);
 
-    //printSummary(0,0,0);
+  
     return 0;
 }
