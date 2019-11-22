@@ -20,9 +20,58 @@ int is_transpose(int M, int N, int A[N][M], int B[M][N]);
  *     be graded. 
  */
 char transpose_submit_desc[] = "Transpose submission";
+
+
+/*
+void handleBlock(int i, int j, int M, int N, int A[N][M], int B[M][N])
+{
+        int x, y, temp;
+        for(x =0; x<8;x++){
+                for(y = 0; y< 8; y++){
+			if(i!=j || x !=y){
+				B[j+x][i+y] = A[i+y][j+x];
+
+			}else {
+				temp = A[i+y][j+x];
+			}
+                }
+		if(i ==j){
+			B[i+x][i+x] = temp;
+		}
+	} 
+}
+*/
+
 void transpose_submit(int M, int N, int A[N][M], int B[M][N])
 {
+
+    int i,j,x,a,b,c,d,e,f,g,h;
+    for (i = 0; i < N; i+=8) {
+        for (j = 0; j < M; j+=8) {
+		//handleBlock(i,j,M,N,A,B);
+		for(x =0; x<8;x++){
+                               a = A[i][j+x];
+			       b = A[i+1][j+x];
+			       c = A[i+2][j+x];
+			       d =  A[i+3][j+x];
+			       e = A[i+4][j+x];
+			       f = A[i+5][j+x];
+			       g =  A[i+6][j+x];
+			       h =  A[i+7][j+x];
+			       B[j+x][i]=a;
+			       B[j+x][i+1] = b;
+			       B[j+x][i+2] = c;
+			       B[j+x][i+3] = d;
+			       B[j+x][i+4] = e;
+			       B[j+x][i+5] = f;
+			       B[j+x][i+6] = g;
+			       B[j+x][i+7] = h;
+		}
+        }
+    }
+
 }
+
 
 /* 
  * You can define additional transpose functions below. We've defined
