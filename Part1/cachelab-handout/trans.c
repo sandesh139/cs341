@@ -22,33 +22,15 @@ int is_transpose(int M, int N, int A[N][M], int B[M][N]);
 char transpose_submit_desc[] = "Transpose submission";
 
 
-/*
-void handleBlock(int i, int j, int M, int N, int A[N][M], int B[M][N])
-{
-        int x, y, temp;
-        for(x =0; x<8;x++){
-                for(y = 0; y< 8; y++){
-			if(i!=j || x !=y){
-				B[j+x][i+y] = A[i+y][j+x];
 
-			}else {
-				temp = A[i+y][j+x];
-			}
-                }
-		if(i ==j){
-			B[i+x][i+x] = temp;
-		}
-	} 
-}
-*/
 
 void transpose_submit(int M, int N, int A[N][M], int B[M][N])
 {
 
     int i,j,x,a,b,c,d,e,f,g,h;
+    if(M == 32){
     for (i = 0; i < N; i+=8) {
         for (j = 0; j < M; j+=8) {
-		//handleBlock(i,j,M,N,A,B);
 		for(x =0; x<8;x++){
                                a = A[i][j+x];
 			       b = A[i+1][j+x];
@@ -67,7 +49,23 @@ void transpose_submit(int M, int N, int A[N][M], int B[M][N])
 			       B[j+x][i+6] = g;
 			       B[j+x][i+7] = h;
 		}
-        }
+	}
+    }
+
+    }
+    if(M ==61 && N == 67){
+	    for(i = 0; i< N; i+=16){
+		    for(j = 0; j<M; j+=16){
+			    for(x=0; (x<16) &&(j+x)<61; x++){
+				    for(a = 0; a<16&& (i+a)<67; a++){
+					    
+						    //printf("this is i+a = %d, and j+x = %d\n",(i+a),(j+x));
+						    B[j+x][i+a]= A[i+a][j+x];
+					    
+				    }
+			    }
+		    }
+	    }
     }
 
 }
