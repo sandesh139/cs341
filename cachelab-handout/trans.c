@@ -28,10 +28,16 @@ void transpose_submit(int M, int N, int A[N][M], int B[M][N])
 {
 
     int i,j,x,a,b,c,d,e,f,g,h;
+
+
+    //matrix of size 32*32
     if(M == 32){
+
+    //here we make blocking size of 8
     for (i = 0; i < N; i+=8) {
         for (j = 0; j < M; j+=8) {
 		for(x =0; x<8;x++){
+				//we use the registers to store that accessed matrix from the memory
                                a = A[i][j+x];
 			       b = A[i+1][j+x];
 			       c = A[i+2][j+x];
@@ -40,6 +46,8 @@ void transpose_submit(int M, int N, int A[N][M], int B[M][N])
 			       f = A[i+5][j+x];
 			       g =  A[i+6][j+x];
 			       h =  A[i+7][j+x];
+
+			       //then we assign all the values from register to memory.
 			       B[j+x][i]=a;
 			       B[j+x][i+1] = b;
 			       B[j+x][i+2] = c;
@@ -53,11 +61,15 @@ void transpose_submit(int M, int N, int A[N][M], int B[M][N])
     }
 
     }
+
+    //matrix of size 61*67
     if(M ==61 && N == 67){
+
+	    //using the blocking of size of 16
 	    for(i = 0; i< N; i+=16){
 		    for(j = 0; j<M; j+=16){
-			    for(x=0; (x<16) &&(j+x)<61; x++){
-				    for(a = 0; a<16&& (i+a)<67; a++){
+			    for(x=0; (x<16) &&(j+x)<61; x++){  //checking the bound 61.
+				    for(a = 0; a<16&& (i+a)<67; a++){  //checking the bound of 67.
 					    
 						    //printf("this is i+a = %d, and j+x = %d\n",(i+a),(j+x));
 						    B[j+x][i+a]= A[i+a][j+x];
@@ -68,10 +80,15 @@ void transpose_submit(int M, int N, int A[N][M], int B[M][N])
 	    }
     }
 
+
+
+//this is matrix of size 64 *64
     if(M==64){
+	    //here using the blocking of size 4.
 	for (i = 0; i < N; i+=4) {
         	for (j = 0; j < M; j+=4) {
-                	for(x =0; x<4;x++){
+                	for(x =0; x<4;x++){     
+			        //using the registers.	
                                a = A[i][j+x];
                                b = A[i+1][j+x];
                                c = A[i+2][j+x];
